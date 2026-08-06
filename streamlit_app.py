@@ -9,6 +9,7 @@ import streamlit as st
 from utils.data_loader import load_data
 from utils.metrics import add_derived_columns, compute_kpis
 from utils.filters import render_sidebar_filters
+from utils.constants import DISCLAIMER
 from utils import charts
 
 st.set_page_config(
@@ -46,6 +47,9 @@ filtered_df = add_derived_columns(filtered_df, util_threshold, stale_threshold)
 # Page content
 # ---------------------------------------------------------------------------
 st.title("🖥️ Ryman IT Asset Management Dashboard")
+
+st.warning(DISCLAIMER)
+
 st.caption(
     "A demonstration of the analytical work of an **Asset Management Analyst** — "
     "managing the full lifecycle of technology assets across Ryman villages in "

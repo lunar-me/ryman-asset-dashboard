@@ -10,6 +10,8 @@ import streamlit as st
 from utils.data_loader import load_data
 from utils.metrics import add_derived_columns
 from utils.filters import render_sidebar_filters
+from utils.constants import DISCLAIMER
+from utils.formatting import format_dataframe_for_display
 from utils import charts
 
 st.set_page_config(page_title="Compliance & Risk", page_icon="🛡️", layout="wide")
@@ -30,6 +32,7 @@ filtered_df = add_derived_columns(filtered_df, util_threshold, stale_threshold)
 # Page content
 # ---------------------------------------------------------------------------
 st.title("🛡️ Compliance & Risk")
+st.warning(DISCLAIMER)
 st.caption(
     "Surface non-compliant and higher-risk assets — for governance, audit "
     "readiness, and risk conversations."
@@ -150,14 +153,14 @@ else:
         {"Reason": list(reason_counts.keys()), "Count": list(reason_counts.values())}
     ).sort_values("Count", ascending=False)
 
-    st.dataframe(reason_df, hide_index=True, width='stretch')
+    st.dataframe(format_dataframe_for_display(reason_df), hide_index=True, width='stretch')
 
     st.divider()
 
     # Non-compliant asset list
     st.subheader(f"Non-Compliant Asset List ({len(non_compliant):,})")
     cols = [c for c in ["asset_tag", "asset_type", "model", "location", "assigned_to", "install_status", "encryption_status", "os_supported", "warranty_status", "purchase_cost_nzd", "notes"] if c in non_compliant.columns]
-    st.dataframe(non_compliant[cols], hide_index=True, width='stretch')
+    st.dataframe(format_dataframe_for_display(non_compliant[cols]), hide_index=True, width='stretch')
     st.download_button(
         "⬇️ Download non-compliant assets (CSV)",
         data=non_compliant.to_csv(index=False).encode("utf-8"),
@@ -178,7 +181,7 @@ if "warranty_status" in filtered_df.columns:
         .agg(count=("sys_id", "count"), total_cost=("purchase_cost_nzd", "sum"))
         .reset_index()
     )
-    st.dataframe(warranty_summary.round(0), hide_index=True, width='stretch')
+    st.dataframe(format_dataframe_for_display(warranty_summary.round(0)), hide_index=True, width='stretch')
 
     # In-use past warranty list
     if in_use_past_warranty > 0:
@@ -188,7 +191,7 @@ if "warranty_status" in filtered_df.columns:
             & (filtered_df["warranty_status"].astype(str) == "Expired")
         ]
         cols = [c for c in ["asset_tag", "asset_type", "model", "location", "assigned_to", "purchase_date", "warranty_expiration", "purchase_cost_nzd"] if c in in_use_expired.columns]
-        st.dataframe(in_use_expired[cols], hide_index=True, width='stretch')
+        st.dataframe(format_dataframe_for_display(in_use_expired[cols]), hide_index=True, width='stretch')
 
 st.divider()
 
@@ -200,7 +203,7 @@ if "notes" in filtered_df.columns:
     if len(notes_df) > 0:
         st.subheader("Assets with Investigation Notes")
         cols = [c for c in ["asset_tag", "asset_type", "location", "assigned_to", "notes", "purchase_cost_nzd"] if c in notes_df.columns]
-        st.dataframe(notes_df[cols], hide_index=True, width='stretch')
+        st.dataframe(format_dataframe_for_display(notes_df[cols]), hide_index=True, width='stretch')
 
 st.divider()
 st.info(

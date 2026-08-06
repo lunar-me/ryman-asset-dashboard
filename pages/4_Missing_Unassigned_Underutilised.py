@@ -10,6 +10,8 @@ import streamlit as st
 from utils.data_loader import load_data
 from utils.metrics import add_derived_columns
 from utils.filters import render_sidebar_filters
+from utils.constants import DISCLAIMER
+from utils.formatting import format_dataframe_for_display
 from utils import charts
 
 st.set_page_config(page_title="Missing / Unassigned / Under-utilised", page_icon="🔎", layout="wide")
@@ -30,6 +32,7 @@ filtered_df = add_derived_columns(filtered_df, util_threshold, stale_threshold)
 # Page content
 # ---------------------------------------------------------------------------
 st.title("🔎 Missing / Unassigned / Under-utilised")
+st.warning(DISCLAIMER)
 st.caption(
     "Where is value leaking? Investigate missing, unassigned, and "
     "under-utilised assets — the core investigative work of the role."
@@ -119,7 +122,7 @@ with tab1:
         st.markdown(f"**Missing Asset List ({len(missing_df):,})**")
         cols = [c for c in export_cols if c in missing_df.columns]
         view = missing_df[cols].sort_values("investigation_priority", ascending=False)
-        st.dataframe(view, hide_index=True, width='stretch')
+        st.dataframe(format_dataframe_for_display(view), hide_index=True, width='stretch')
         st.download_button(
             "⬇️ Download missing assets (CSV)",
             data=view.to_csv(index=False).encode("utf-8"),
@@ -167,12 +170,12 @@ with tab2:
             high_value = unassigned_df.nlargest(10, "purchase_cost_nzd")
             high_value = high_value[["asset_tag", "asset_type", "model", "purchase_cost_nzd", "location"]]
             st.markdown("**Top 10 High-Value Unassigned**")
-            st.dataframe(high_value, hide_index=True, width='stretch')
+            st.dataframe(format_dataframe_for_display(high_value), hide_index=True, width='stretch')
 
         st.markdown(f"**Unassigned Asset List ({len(unassigned_df):,})**")
         cols = [c for c in export_cols if c in unassigned_df.columns]
         view = unassigned_df[cols].sort_values("investigation_priority", ascending=False)
-        st.dataframe(view, hide_index=True, width='stretch')
+        st.dataframe(format_dataframe_for_display(view), hide_index=True, width='stretch')
         st.download_button(
             "⬇️ Download unassigned assets (CSV)",
             data=view.to_csv(index=False).encode("utf-8"),
@@ -232,7 +235,7 @@ with tab3:
         st.markdown(f"**Reclaim Candidate List ({len(reclaim_df):,})** — ranked by investigation priority")
         cols = [c for c in export_cols if c in reclaim_df.columns]
         view = reclaim_df[cols].sort_values("investigation_priority", ascending=False)
-        st.dataframe(view, hide_index=True, width='stretch')
+        st.dataframe(format_dataframe_for_display(view), hide_index=True, width='stretch')
         st.download_button(
             "⬇️ Download reclaim candidates (CSV)",
             data=view.to_csv(index=False).encode("utf-8"),

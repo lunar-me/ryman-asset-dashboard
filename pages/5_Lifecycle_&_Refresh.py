@@ -9,6 +9,8 @@ import streamlit as st
 from utils.data_loader import load_data
 from utils.metrics import add_derived_columns
 from utils.filters import render_sidebar_filters
+from utils.constants import DISCLAIMER
+from utils.formatting import format_dataframe_for_display
 from utils import charts
 
 st.set_page_config(page_title="Lifecycle & Refresh", page_icon="🔄", layout="wide")
@@ -29,6 +31,7 @@ filtered_df = add_derived_columns(filtered_df, util_threshold, stale_threshold)
 # Page content
 # ---------------------------------------------------------------------------
 st.title("🔄 Lifecycle & Refresh Planning")
+st.warning(DISCLAIMER)
 st.caption(
     "End-to-end lifecycle visibility — age, stage, refresh timing, and "
     "disposal recovery — to support refresh programmes and budgeting."
@@ -164,7 +167,7 @@ if len(refresh_forecast) > 0:
     st.markdown("**Refresh Forecast Detail**")
     detail = refresh_forecast.copy()
     detail["est_cost"] = detail["est_cost"].round(0)
-    st.dataframe(detail, hide_index=True, width='stretch')
+    st.dataframe(format_dataframe_for_display(detail), hide_index=True, width='stretch')
 
 st.divider()
 
@@ -178,7 +181,7 @@ warranty_summary = (
     .reset_index()
 )
 if len(warranty_summary) > 0:
-    st.dataframe(warranty_summary, hide_index=True, width='stretch')
+    st.dataframe(format_dataframe_for_display(warranty_summary), hide_index=True, width='stretch')
 
 st.divider()
 
@@ -218,7 +221,7 @@ if len(retired) > 0:
 
     st.markdown(f"**Retired / Disposed Asset List ({len(retired):,})**")
     cols = [c for c in ["asset_tag", "asset_type", "model", "disposal_date", "disposal_method", "purchase_cost_nzd", "residual_value_nzd", "location"] if c in retired.columns]
-    st.dataframe(retired[cols], hide_index=True, width='stretch')
+    st.dataframe(format_dataframe_for_display(retired[cols]), hide_index=True, width='stretch')
 else:
     st.info("No retired/disposed assets in the current filter view.")
 
@@ -231,4 +234,4 @@ refresh_due_df = filtered_df[filtered_df["is_refresh_due_soon"]]
 if len(refresh_due_df) > 0:
     st.subheader(f"Devices Due for Refresh ({len(refresh_due_df):,})")
     cols = [c for c in ["asset_tag", "asset_type", "model", "location", "assigned_to", "purchase_date", "asset_age_years", "planned_refresh_date", "remaining_life_years", "purchase_cost_nzd"] if c in refresh_due_df.columns]
-    st.dataframe(refresh_due_df[cols], hide_index=True, width='stretch')
+    st.dataframe(format_dataframe_for_display(refresh_due_df[cols]), hide_index=True, width='stretch')

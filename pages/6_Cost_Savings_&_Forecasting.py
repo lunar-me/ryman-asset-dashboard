@@ -9,6 +9,8 @@ import streamlit as st
 from utils.data_loader import load_data
 from utils.metrics import add_derived_columns
 from utils.filters import render_sidebar_filters
+from utils.constants import DISCLAIMER
+from utils.formatting import format_dataframe_for_display
 from utils import charts
 
 st.set_page_config(page_title="Cost Savings & Forecasting", page_icon="💰", layout="wide")
@@ -29,6 +31,7 @@ filtered_df = add_derived_columns(filtered_df, util_threshold, stale_threshold)
 # Page content
 # ---------------------------------------------------------------------------
 st.title("💰 Cost Savings & Forecasting")
+st.warning(DISCLAIMER)
 st.caption(
     "Turn asset data into financial insight — spend analysis, reclaim "
     "scenarios, model standardisation, and refresh cost forecasting."
@@ -103,8 +106,7 @@ problem_summary = pd.DataFrame(
     }
 )
 
-st.dataframe(
-    problem_summary.round(0),
+st.dataframe(format_dataframe_for_display(problem_summary.round(0)),
     hide_index=True,
     width='stretch',
 )
@@ -137,7 +139,7 @@ scenarios = pd.DataFrame(
 )
 scenarios["Estimated Savings (NZD)"] = scenarios["Estimated Savings (NZD)"].round(0)
 
-st.dataframe(scenarios, hide_index=True, width='stretch')
+st.dataframe(format_dataframe_for_display(scenarios), hide_index=True, width='stretch')
 
 st.caption(
     "Heuristic: 50% of under-utilised cost, 25% of unassigned cost, 40% of "
@@ -237,8 +239,7 @@ if len(forecast_by_type_year) > 0:
         )
 
     with col2:
-        st.dataframe(
-            forecast_by_type_year.round(0),
+        st.dataframe(format_dataframe_for_display(forecast_by_type_year.round(0)),
             hide_index=True,
             width='stretch',
         )
@@ -262,7 +263,7 @@ if len(retired) > 0:
     st.markdown("**Top 10 by Residual Value**")
     top_residual = retired.nlargest(10, "residual_value_nzd")
     cols = [c for c in ["asset_tag", "asset_type", "model", "disposal_method", "residual_value_nzd", "purchase_cost_nzd"] if c in top_residual.columns]
-    st.dataframe(top_residual[cols], hide_index=True, width='stretch')
+    st.dataframe(format_dataframe_for_display(top_residual[cols]), hide_index=True, width='stretch')
 else:
     st.info("No retired/disposed assets in the current filter view.")
 

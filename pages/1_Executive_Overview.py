@@ -9,6 +9,8 @@ import streamlit as st
 from utils.data_loader import load_data
 from utils.metrics import add_derived_columns, compute_kpis
 from utils.filters import render_sidebar_filters
+from utils.constants import DISCLAIMER
+from utils.formatting import format_dataframe_for_display
 from utils import charts
 
 st.set_page_config(page_title="Executive Overview", page_icon="📊", layout="wide")
@@ -29,6 +31,7 @@ filtered_df = add_derived_columns(filtered_df, util_threshold, stale_threshold)
 # Page content
 # ---------------------------------------------------------------------------
 st.title("📊 Executive Overview")
+st.warning(DISCLAIMER)
 st.caption(
     "A 30-second health check on the technology estate — for Technology, "
     "Finance, and village stakeholders."
