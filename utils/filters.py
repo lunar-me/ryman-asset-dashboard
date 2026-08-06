@@ -29,7 +29,15 @@ def render_sidebar_filters(df: pd.DataFrame) -> tuple[pd.DataFrame, int, int]:
     if "data_source" in st.session_state:
         st.sidebar.caption(f"**Source:** {st.session_state.data_source}")
     if "last_loaded" in st.session_state:
-        st.sidebar.caption(f"**Loaded:** {st.session_state.last_loaded.strftime('%H:%M:%S')}")
+        # Convert to Pacific/Auckland (NZST) timezone for display
+        ts = st.session_state.last_loaded
+        try:
+            from zoneinfo import ZoneInfo
+            nz_ts = ts.astimezone(ZoneInfo("Pacific/Auckland"))
+            loaded_str = nz_ts.strftime("%d %b %Y %H:%M:%S %Z")
+        except Exception:
+            loaded_str = ts.strftime("%d %b %Y %H:%M:%S")
+        st.sidebar.caption(f"**Loaded:** {loaded_str}")
 
     # Refresh button
     if st.sidebar.button("🔄 Refresh data", width='stretch'):
