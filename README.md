@@ -4,7 +4,7 @@ A Streamlit dashboard demonstrating the analytical work of an **Asset Management
 
 ## Features
 
-- **7 pages**: Executive Overview, Asset Inventory, Data Quality & Anomalies, Missing/Unassigned/Under-utilised, Lifecycle & Refresh, Cost Savings & Forecasting, Compliance & Risk
+- **8 pages**: Home, Executive Overview, Asset Inventory, Data Quality & Anomalies, Missing/Unassigned/Under-utilised, Lifecycle & Refresh, Cost Savings & Forecasting, Compliance & Risk, Resources
 - **Dual data mode**: Supabase (primary) with automatic local CSV fallback
 - **Global filters**: asset type, location, lifecycle stage, install status, purchase date range, utilisation threshold, stale threshold
 - **Export**: every major table downloadable as CSV
@@ -26,7 +26,7 @@ pip install -r requirements.txt
 #    ryman_assets.csv  (15,000 rows × 37 columns)
 
 # 4. Launch
-streamlit run streamlit_app.py
+streamlit run Home.py
 ```
 
 ## Data Sources
@@ -46,10 +46,10 @@ The dataset is fully **synthetic** — no real Ryman Healthcare data. It mimics 
 
 ```text
 ryman-asset-dashboard/
-├── streamlit_app.py              # Entry point / Home
+├── Home.py                       # Entry point / Home (first menu item)
 ├── pages/
 │   ├── 1_Executive_Overview.py
-│   ├── 2_Asset_Inventory.py
+│   ├── 2_Asset_Inventory
 │   ├── 3_Data_Quality_&_Anomalies.py
 │   ├── 4_Missing_Unassigned_Underutilised.py
 │   ├── 5_Lifecycle_&_Refresh.py

@@ -10,7 +10,7 @@ from utils.data_loader import load_data
 from utils.metrics import add_derived_columns
 from utils.filters import render_sidebar_filters
 from utils.constants import DISCLAIMER
-from utils.formatting import format_dataframe_for_display
+from utils.formatting import format_dataframe_for_display, format_age_years
 from utils import charts
 
 st.set_page_config(page_title="Lifecycle & Refresh", page_icon="🔄", layout="wide")
@@ -65,7 +65,7 @@ retired = filtered_df[filtered_df["lifecycle_stage"].astype(str).isin(["Retired"
 residual_value = retired["residual_value_nzd"].sum()
 
 c1, c2, c3, c4 = st.columns(4)
-c1.metric("Average Age", f"{avg_age:.1f} yrs")
+c1.metric("Average Age", format_age_years(avg_age))
 c2.metric("% Past Useful Life", f"{pct_past_life:.1f}%")
 c3.metric("Refresh Due (12 mo)", f"{refresh_volume:,}")
 c4.metric("Est. Refresh Cost", f"${est_refresh_cost:,.0f}")
