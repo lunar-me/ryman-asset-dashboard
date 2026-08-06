@@ -32,7 +32,7 @@ def render_sidebar_filters(df: pd.DataFrame) -> tuple[pd.DataFrame, int, int]:
         st.sidebar.caption(f"**Loaded:** {st.session_state.last_loaded.strftime('%H:%M:%S')}")
 
     # Refresh button
-    if st.sidebar.button("🔄 Refresh data", use_container_width=True):
+    if st.sidebar.button("🔄 Refresh data", width='stretch'):
         st.session_state.force_refresh = True
         st.rerun()
 
@@ -118,7 +118,7 @@ def render_sidebar_filters(df: pd.DataFrame) -> tuple[pd.DataFrame, int, int]:
     st.sidebar.divider()
 
     # ---------- Reset filters ----------
-    if st.sidebar.button("Reset filters", use_container_width=True):
+    if st.sidebar.button("Reset filters", width='stretch'):
         for key in [
             "filters_asset_types",
             "filters_locations",
@@ -160,7 +160,7 @@ def render_sidebar_filters(df: pd.DataFrame) -> tuple[pd.DataFrame, int, int]:
             data=csv,
             file_name="ryman_assets_filtered.csv",
             mime="text/csv",
-            use_container_width=True,
+            width='stretch',
         )
 
     # ---------- About expander ----------

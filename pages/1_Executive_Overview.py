@@ -77,7 +77,7 @@ with left:
     )
     st.plotly_chart(
         charts.horizontal_bar(type_counts, "count", "asset_type", "Asset Count by Type"),
-        use_container_width=True,
+        width='stretch',
     )
 
 with right:
@@ -95,7 +95,7 @@ with right:
             "Total Cost by Type (NZD)",
             color=charts.COLOR_PRIMARY,
         ),
-        use_container_width=True,
+        width='stretch',
     )
 
 st.divider()
@@ -113,7 +113,7 @@ with left:
     )
     st.plotly_chart(
         charts.funnel_stages(lifecycle_counts, "lifecycle_stage", "count", "Lifecycle Stage Distribution"),
-        use_container_width=True,
+        width='stretch',
     )
 
 with right:
@@ -160,7 +160,7 @@ with right:
             "Top 10 Locations by Problem Count",
             color=charts.COLOR_WARNING,
         ),
-        use_container_width=True,
+        width='stretch',
     )
 
 st.divider()
@@ -178,7 +178,7 @@ purchase_trend = (
 if len(purchase_trend) > 0:
     st.plotly_chart(
         charts.line_trend(purchase_trend, "year", "count", "Assets Purchased by Year"),
-        use_container_width=True,
+        width='stretch',
     )
 
 st.divider()

@@ -108,7 +108,7 @@ else:
                 noncomp_by_type, "count", "asset_type", "Non-Compliant by Type",
                 color=charts.COLOR_CRITICAL,
             ),
-            use_container_width=True,
+            width='stretch',
         )
 
     with right:
@@ -124,7 +124,7 @@ else:
                 noncomp_by_loc, "count", "location", "Non-Compliant by Location",
                 color=charts.COLOR_CRITICAL,
             ),
-            use_container_width=True,
+            width='stretch',
         )
 
     st.divider()
@@ -150,14 +150,14 @@ else:
         {"Reason": list(reason_counts.keys()), "Count": list(reason_counts.values())}
     ).sort_values("Count", ascending=False)
 
-    st.dataframe(reason_df, hide_index=True, use_container_width=True)
+    st.dataframe(reason_df, hide_index=True, width='stretch')
 
     st.divider()
 
     # Non-compliant asset list
     st.subheader(f"Non-Compliant Asset List ({len(non_compliant):,})")
     cols = [c for c in ["asset_tag", "asset_type", "model", "location", "assigned_to", "install_status", "encryption_status", "os_supported", "warranty_status", "purchase_cost_nzd", "notes"] if c in non_compliant.columns]
-    st.dataframe(non_compliant[cols], hide_index=True, use_container_width=True)
+    st.dataframe(non_compliant[cols], hide_index=True, width='stretch')
     st.download_button(
         "⬇️ Download non-compliant assets (CSV)",
         data=non_compliant.to_csv(index=False).encode("utf-8"),
@@ -178,7 +178,7 @@ if "warranty_status" in filtered_df.columns:
         .agg(count=("sys_id", "count"), total_cost=("purchase_cost_nzd", "sum"))
         .reset_index()
     )
-    st.dataframe(warranty_summary.round(0), hide_index=True, use_container_width=True)
+    st.dataframe(warranty_summary.round(0), hide_index=True, width='stretch')
 
     # In-use past warranty list
     if in_use_past_warranty > 0:
@@ -188,7 +188,7 @@ if "warranty_status" in filtered_df.columns:
             & (filtered_df["warranty_status"].astype(str) == "Expired")
         ]
         cols = [c for c in ["asset_tag", "asset_type", "model", "location", "assigned_to", "purchase_date", "warranty_expiration", "purchase_cost_nzd"] if c in in_use_expired.columns]
-        st.dataframe(in_use_expired[cols], hide_index=True, use_container_width=True)
+        st.dataframe(in_use_expired[cols], hide_index=True, width='stretch')
 
 st.divider()
 
@@ -200,7 +200,7 @@ if "notes" in filtered_df.columns:
     if len(notes_df) > 0:
         st.subheader("Assets with Investigation Notes")
         cols = [c for c in ["asset_tag", "asset_type", "location", "assigned_to", "notes", "purchase_cost_nzd"] if c in notes_df.columns]
-        st.dataframe(notes_df[cols], hide_index=True, use_container_width=True)
+        st.dataframe(notes_df[cols], hide_index=True, width='stretch')
 
 st.divider()
 st.info(

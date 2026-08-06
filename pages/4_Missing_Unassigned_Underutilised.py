@@ -102,7 +102,7 @@ with tab1:
                     missing_by_loc, "count", "location", "Missing by Location",
                     color=charts.COLOR_CRITICAL,
                 ),
-                use_container_width=True,
+                width='stretch',
             )
 
         with right:
@@ -113,13 +113,13 @@ with tab1:
                     "Days Since Last Seen (Missing)",
                     color=charts.COLOR_CRITICAL,
                 ),
-                use_container_width=True,
+                width='stretch',
             )
 
         st.markdown(f"**Missing Asset List ({len(missing_df):,})**")
         cols = [c for c in export_cols if c in missing_df.columns]
         view = missing_df[cols].sort_values("investigation_priority", ascending=False)
-        st.dataframe(view, hide_index=True, use_container_width=True)
+        st.dataframe(view, hide_index=True, width='stretch')
         st.download_button(
             "⬇️ Download missing assets (CSV)",
             data=view.to_csv(index=False).encode("utf-8"),
@@ -159,7 +159,7 @@ with tab2:
                     unassigned_by_type, "count", "asset_type", "Unassigned by Type",
                     color=charts.COLOR_WARNING,
                 ),
-                use_container_width=True,
+                width='stretch',
             )
 
         with right:
@@ -167,12 +167,12 @@ with tab2:
             high_value = unassigned_df.nlargest(10, "purchase_cost_nzd")
             high_value = high_value[["asset_tag", "asset_type", "model", "purchase_cost_nzd", "location"]]
             st.markdown("**Top 10 High-Value Unassigned**")
-            st.dataframe(high_value, hide_index=True, use_container_width=True)
+            st.dataframe(high_value, hide_index=True, width='stretch')
 
         st.markdown(f"**Unassigned Asset List ({len(unassigned_df):,})**")
         cols = [c for c in export_cols if c in unassigned_df.columns]
         view = unassigned_df[cols].sort_values("investigation_priority", ascending=False)
-        st.dataframe(view, hide_index=True, use_container_width=True)
+        st.dataframe(view, hide_index=True, width='stretch')
         st.download_button(
             "⬇️ Download unassigned assets (CSV)",
             data=view.to_csv(index=False).encode("utf-8"),
@@ -212,7 +212,7 @@ with tab3:
                     reclaim_by_loc, "count", "location", "Reclaim Candidates by Location",
                     color=charts.COLOR_WARNING,
                 ),
-                use_container_width=True,
+                width='stretch',
             )
 
     with right:
@@ -224,7 +224,7 @@ with tab3:
                     "Utilisation Score (Reclaim Candidates)",
                     color=charts.COLOR_WARNING,
                 ),
-                use_container_width=True,
+                width='stretch',
             )
 
     # Ranked list of reclaim candidates
@@ -232,7 +232,7 @@ with tab3:
         st.markdown(f"**Reclaim Candidate List ({len(reclaim_df):,})** — ranked by investigation priority")
         cols = [c for c in export_cols if c in reclaim_df.columns]
         view = reclaim_df[cols].sort_values("investigation_priority", ascending=False)
-        st.dataframe(view, hide_index=True, use_container_width=True)
+        st.dataframe(view, hide_index=True, width='stretch')
         st.download_button(
             "⬇️ Download reclaim candidates (CSV)",
             data=view.to_csv(index=False).encode("utf-8"),

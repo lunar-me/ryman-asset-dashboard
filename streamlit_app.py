@@ -103,5 +103,5 @@ if len(filtered_df) > 0:
     )
     st.plotly_chart(
         charts.vertical_bar(type_counts, "asset_type", "count", "Assets by Type"),
-        use_container_width=True,
+        width='stretch',
     )

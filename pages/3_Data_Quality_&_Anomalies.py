@@ -69,7 +69,7 @@ left, right = st.columns([3, 2])
 with left:
     st.plotly_chart(
         charts.completeness_heatmap(dq["completeness"]),
-        use_container_width=True,
+        width='stretch',
     )
 
 with right:
@@ -81,7 +81,7 @@ with right:
             "Blank": [dq["blank_counts"].get(f, 0) for f in dq["completeness"].keys()],
         }
     )
-    st.dataframe(comp_df, hide_index=True, use_container_width=True)
+    st.dataframe(comp_df, hide_index=True, width='stretch')
 
 st.divider()
 
@@ -96,7 +96,7 @@ with tab1:
     st.markdown("**Duplicate serial numbers** — same serial appearing on multiple records.")
     if len(dq["duplicate_rows"]) > 0:
         dup_cols = [c for c in ["asset_tag", "serial_number", "ci_name", "location", "assigned_to", "install_status", "purchase_date"] if c in dq["duplicate_rows"].columns]
-        st.dataframe(dq["duplicate_rows"][dup_cols], hide_index=True, use_container_width=True)
+        st.dataframe(dq["duplicate_rows"][dup_cols], hide_index=True, width='stretch')
         st.download_button(
             "⬇️ Download duplicate serials",
             data=dq["duplicate_rows"].to_csv(index=False).encode("utf-8"),
@@ -116,7 +116,7 @@ with tab2:
     if missing_mask.sum() > 0:
         missing_df = filtered_df[missing_mask]
         cols = [c for c in ["asset_tag", "asset_type", "model", "location", "assigned_to", "serial_number", "purchase_date"] if c in missing_df.columns]
-        st.dataframe(missing_df[cols], hide_index=True, use_container_width=True)
+        st.dataframe(missing_df[cols], hide_index=True, width='stretch')
         st.caption(f"**{len(missing_df):,}** records with at least one missing critical field.")
     else:
         st.success("No missing critical fields found in the current view.")
@@ -127,7 +127,7 @@ with tab3:
     )
     if len(dq["cost_outlier_rows"]) > 0:
         outlier_cols = [c for c in ["asset_tag", "asset_type", "model", "purchase_cost_nzd", "location", "purchase_date"] if c in dq["cost_outlier_rows"].columns]
-        st.dataframe(dq["cost_outlier_rows"][outlier_cols], hide_index=True, use_container_width=True)
+        st.dataframe(dq["cost_outlier_rows"][outlier_cols], hide_index=True, width='stretch')
         st.caption(
             f"**{len(dq['cost_outlier_rows']):,}** records flagged as cost outliers."
         )
@@ -156,7 +156,7 @@ with tab4:
         for label, data in date_issues:
             st.markdown(f"**{label}** — {len(data):,} records")
             cols = [c for c in ["asset_tag", "asset_type", "purchase_date", "warranty_expiration", "location"] if c in data.columns]
-            st.dataframe(data[cols], hide_index=True, use_container_width=True)
+            st.dataframe(data[cols], hide_index=True, width='stretch')
 
 st.divider()
 
@@ -192,7 +192,7 @@ if len(anomaly_by_dim) > 0:
             f"Anomalies by {dim.replace('_', ' ').title()}",
             color=charts.COLOR_WARNING,
         ),
-        use_container_width=True,
+        width='stretch',
     )
 
 st.divider()

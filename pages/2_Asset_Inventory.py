@@ -51,19 +51,19 @@ col1, col2, col3 = st.columns(3)
 with col1:
     type_summary = filtered_df.groupby("asset_type").size().reset_index(name="count")
     st.markdown("**Assets by Type**")
-    st.dataframe(type_summary, hide_index=True, use_container_width=True)
+    st.dataframe(type_summary, hide_index=True, width='stretch')
 
 with col2:
     install_summary = (
         filtered_df.groupby("install_status").size().reset_index(name="count")
     )
     st.markdown("**Assets by Install Status**")
-    st.dataframe(install_summary, hide_index=True, use_container_width=True)
+    st.dataframe(install_summary, hide_index=True, width='stretch')
 
 with col3:
     loc_summary = filtered_df.groupby("location").size().reset_index(name="count")
     st.markdown("**Assets by Location**")
-    st.dataframe(loc_summary, hide_index=True, use_container_width=True)
+    st.dataframe(loc_summary, hide_index=True, width='stretch')
 
 st.divider()
 
@@ -120,7 +120,7 @@ if selected_cols:
 # Display table
 # ---------------------------------------------------------------------------
 st.subheader(f"Inventory ({len(view):,} assets)")
-st.dataframe(view, use_container_width=True, hide_index=True)
+st.dataframe(view, width='stretch', hide_index=True)
 
 # Download current view
 if len(view) > 0:
@@ -153,4 +153,4 @@ if group_col:
     group_summary["total_cost"] = group_summary["total_cost"].round(0)
     group_summary["avg_utilisation"] = group_summary["avg_utilisation"].round(1)
     st.markdown(f"**Summary by {group_col.replace('_', ' ').title()}**")
-    st.dataframe(group_summary, hide_index=True, use_container_width=True)
+    st.dataframe(group_summary, hide_index=True, width='stretch')

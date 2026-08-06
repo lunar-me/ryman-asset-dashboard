@@ -82,7 +82,7 @@ with left:
     )
     st.plotly_chart(
         charts.funnel_stages(lifecycle_counts, "lifecycle_stage", "count", "Lifecycle Stage Distribution"),
-        use_container_width=True,
+        width='stretch',
     )
 
 with right:
@@ -100,7 +100,7 @@ with right:
             "Cost by Lifecycle Stage (NZD)",
             color=charts.COLOR_PRIMARY,
         ),
-        use_container_width=True,
+        width='stretch',
     )
 
 st.divider()
@@ -118,7 +118,7 @@ if len(age_by_type) > 0:
         nbins=25,
         height=350,
     )
-    st.plotly_chart(fig, use_container_width=True)
+    st.plotly_chart(fig, width='stretch')
 
 st.divider()
 
@@ -148,7 +148,7 @@ if len(refresh_forecast) > 0:
                 refresh_forecast, "refresh_year", "count", "Assets Due for Refresh",
                 color=charts.COLOR_WARNING,
             ),
-            use_container_width=True,
+            width='stretch',
         )
 
     with col2:
@@ -157,14 +157,14 @@ if len(refresh_forecast) > 0:
                 refresh_forecast, "refresh_year", "est_cost", "Estimated Refresh Cost (NZD)",
                 color=charts.COLOR_PRIMARY,
             ),
-            use_container_width=True,
+            width='stretch',
         )
 
     # Detailed table
     st.markdown("**Refresh Forecast Detail**")
     detail = refresh_forecast.copy()
     detail["est_cost"] = detail["est_cost"].round(0)
-    st.dataframe(detail, hide_index=True, use_container_width=True)
+    st.dataframe(detail, hide_index=True, width='stretch')
 
 st.divider()
 
@@ -178,7 +178,7 @@ warranty_summary = (
     .reset_index()
 )
 if len(warranty_summary) > 0:
-    st.dataframe(warranty_summary, hide_index=True, use_container_width=True)
+    st.dataframe(warranty_summary, hide_index=True, width='stretch')
 
 st.divider()
 
@@ -205,7 +205,7 @@ if len(retired) > 0:
                 "Disposals by Method",
                 color=charts.COLOR_NEUTRAL,
             ),
-            use_container_width=True,
+            width='stretch',
         )
 
     with col2:
@@ -218,7 +218,7 @@ if len(retired) > 0:
 
     st.markdown(f"**Retired / Disposed Asset List ({len(retired):,})**")
     cols = [c for c in ["asset_tag", "asset_type", "model", "disposal_date", "disposal_method", "purchase_cost_nzd", "residual_value_nzd", "location"] if c in retired.columns]
-    st.dataframe(retired[cols], hide_index=True, use_container_width=True)
+    st.dataframe(retired[cols], hide_index=True, width='stretch')
 else:
     st.info("No retired/disposed assets in the current filter view.")
 
@@ -231,4 +231,4 @@ refresh_due_df = filtered_df[filtered_df["is_refresh_due_soon"]]
 if len(refresh_due_df) > 0:
     st.subheader(f"Devices Due for Refresh ({len(refresh_due_df):,})")
     cols = [c for c in ["asset_tag", "asset_type", "model", "location", "assigned_to", "purchase_date", "asset_age_years", "planned_refresh_date", "remaining_life_years", "purchase_cost_nzd"] if c in refresh_due_df.columns]
-    st.dataframe(refresh_due_df[cols], hide_index=True, use_container_width=True)
+    st.dataframe(refresh_due_df[cols], hide_index=True, width='stretch')

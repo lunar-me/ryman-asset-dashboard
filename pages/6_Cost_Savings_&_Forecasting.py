@@ -61,7 +61,7 @@ spend_by_year = (
 if len(spend_by_year) > 0:
     st.plotly_chart(
         charts.line_trend(spend_by_year, "year", "purchase_cost_nzd", "Spend by Year (NZD)"),
-        use_container_width=True,
+        width='stretch',
     )
 
 st.divider()
@@ -106,7 +106,7 @@ problem_summary = pd.DataFrame(
 st.dataframe(
     problem_summary.round(0),
     hide_index=True,
-    use_container_width=True,
+    width='stretch',
 )
 
 st.divider()
@@ -137,7 +137,7 @@ scenarios = pd.DataFrame(
 )
 scenarios["Estimated Savings (NZD)"] = scenarios["Estimated Savings (NZD)"].round(0)
 
-st.dataframe(scenarios, hide_index=True, use_container_width=True)
+st.dataframe(scenarios, hide_index=True, width='stretch')
 
 st.caption(
     "Heuristic: 50% of under-utilised cost, 25% of unassigned cost, 40% of "
@@ -181,7 +181,7 @@ st.plotly_chart(
         "Top 15 Models by Asset Count",
         color=charts.COLOR_PRIMARY,
     ),
-    use_container_width=True,
+    width='stretch',
 )
 
 st.divider()
@@ -233,14 +233,14 @@ if len(forecast_by_type_year) > 0:
                 total_by_year, "refresh_year", "est_cost", "Forecast Refresh Cost by Year (NZD)",
                 color=charts.COLOR_PRIMARY,
             ),
-            use_container_width=True,
+            width='stretch',
         )
 
     with col2:
         st.dataframe(
             forecast_by_type_year.round(0),
             hide_index=True,
-            use_container_width=True,
+            width='stretch',
         )
 
 st.divider()
@@ -262,7 +262,7 @@ if len(retired) > 0:
     st.markdown("**Top 10 by Residual Value**")
     top_residual = retired.nlargest(10, "residual_value_nzd")
     cols = [c for c in ["asset_tag", "asset_type", "model", "disposal_method", "residual_value_nzd", "purchase_cost_nzd"] if c in top_residual.columns]
-    st.dataframe(top_residual[cols], hide_index=True, use_container_width=True)
+    st.dataframe(top_residual[cols], hide_index=True, width='stretch')
 else:
     st.info("No retired/disposed assets in the current filter view.")
 
